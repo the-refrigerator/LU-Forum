@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\adminController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThreadController;
+use App\Http\Middleware\CheckRole;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\adminController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,11 +20,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
 Route::get('/threads', [ThreadController::class, 'index'])->name('threads.index');
 Route::get('/threads/{thread}', [ThreadController::class, 'show'])->name('threads.show');
 
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth', CheckRole::class . ':admin'])->group(function () {
     Route::get('/threads/create', [ThreadController::class, 'create'])->name('threads.create');
     Route::post('/threads', [ThreadController::class, 'store'])->name('threads.store');
     Route::get('/threads/{thread}/edit', [ThreadController::class, 'edit'])->name('threads.edit');
@@ -37,4 +37,4 @@ Route::middleware(['auth'])->group(function () {
     Route::GET('/admin/AddAnnouncments', [AdminController::class, 'NewAnnouncments'])->name('pages.admin.NewAnnouncments');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

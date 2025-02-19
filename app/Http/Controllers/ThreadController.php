@@ -4,19 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Thread;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ThreadController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * (No explicit admin or auth requirements; adjust as needed.)
      */
     public function index()
     {
         $threads = Thread::orderBy('created_at', 'desc')->get();
-        // Assuming your view is located at resources/views/threads/index.blade.php
         return view('threads.index', compact('threads'));
     }
 
@@ -27,8 +23,6 @@ class ThreadController extends Controller
      */
     public function create()
     {
-        // Only authenticated users should be allowed to create a thread.
-        // The auth middleware should already ensure that the user is logged in.
         return view('threads.create');
     }
 
@@ -41,7 +35,7 @@ class ThreadController extends Controller
     {
         // Validate the request data.
         $validatedData = $request->validate([
-            'name'        => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
         ]);
 
@@ -51,8 +45,9 @@ class ThreadController extends Controller
         $thread = Thread::create($validatedData);
 
         // Redirect to the thread's page or thread listing with a success message.
-        return redirect()->route('threads.show', $thread)
-                         ->with('status', 'Thread created successfully.');
+        return redirect()
+            ->route('threads.show', $thread)
+            ->with('status', 'Thread created successfully.');
     }
 
     /**
@@ -90,7 +85,7 @@ class ThreadController extends Controller
 
         // Validate the request data.
         $validatedData = $request->validate([
-            'name'        => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
         ]);
 
@@ -98,8 +93,9 @@ class ThreadController extends Controller
         $thread->update($validatedData);
 
         // Redirect with a success message.
-        return redirect()->route('threads.show', $thread)
-                         ->with('status', 'Thread updated successfully.');
+        return redirect()
+            ->route('threads.show', $thread)
+            ->with('status', 'Thread updated successfully.');
     }
 
     /**
@@ -109,13 +105,10 @@ class ThreadController extends Controller
      */
     public function destroy(Thread $thread)
     {
-        // TODO: Ensure this action is authorized for an admin.
-        // Example: abort_unless(Auth::user()->isAdmin(), 403);
-
         $thread->delete();
 
-        // Redirect to the thread list page with a status message.
-        return redirect()->route('threads.index')
-                         ->with('status', 'Thread deleted successfully.');
+        return redirect()
+            ->route('threads.index')
+            ->with('status', 'Thread deleted successfully.');
     }
 }
