@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\adminController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThreadController;
 use App\Http\Middleware\CheckRole;
@@ -20,9 +21,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/threads', [ThreadController::class, 'index'])->name('threads.index');
-Route::get('/threads/{thread}', [ThreadController::class, 'show'])->name('threads.show');
-
 Route::middleware(['auth', CheckRole::class . ':admin'])->group(function () {
     Route::get('/threads/create', [ThreadController::class, 'create'])->name('threads.create');
     Route::post('/threads', [ThreadController::class, 'store'])->name('threads.store');
@@ -30,6 +28,11 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->group(function () {
     Route::patch('/threads/{thread}', [ThreadController::class, 'update'])->name('threads.update');
     Route::delete('/threads/{thread}', [ThreadController::class, 'destroy'])->name('threads.destroy');
 });
+
+Route::get('/threads', [ThreadController::class, 'index'])->name('threads.index');
+Route::get('/threads/{thread}', [ThreadController::class, 'show'])->name('threads.show');
+
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 
 // admin page
 Route::middleware(['auth'])->group(function () {
