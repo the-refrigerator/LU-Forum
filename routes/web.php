@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\adminController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,6 +29,12 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/threads/{thread}/edit', [ThreadController::class, 'edit'])->name('threads.edit');
     Route::patch('/threads/{thread}', [ThreadController::class, 'update'])->name('threads.update');
     Route::delete('/threads/{thread}', [ThreadController::class, 'destroy'])->name('threads.destroy');
+});
+
+// admin page
+Route::middleware(['auth'])->group(function () {
+    Route::GET('/admin', [AdminController::class, 'adminview'])->name('adminpage');
+    Route::GET('/admin/AddAnnouncments', [AdminController::class, 'NewAnnouncments'])->name('pages.admin.NewAnnouncments');
 });
 
 require __DIR__.'/auth.php';
