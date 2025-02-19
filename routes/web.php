@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ThreadController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,6 +16,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+
+Route::get('/threads', [ThreadController::class, 'index'])->name('threads.index');
+Route::get('/threads/{thread}', [ThreadController::class, 'show'])->name('threads.show');
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/threads/create', [ThreadController::class, 'create'])->name('threads.create');
+    Route::post('/threads', [ThreadController::class, 'store'])->name('threads.store');
+    Route::get('/threads/{thread}/edit', [ThreadController::class, 'edit'])->name('threads.edit');
+    Route::patch('/threads/{thread}', [ThreadController::class, 'update'])->name('threads.update');
+    Route::delete('/threads/{thread}', [ThreadController::class, 'destroy'])->name('threads.destroy');
 });
 
 require __DIR__.'/auth.php';

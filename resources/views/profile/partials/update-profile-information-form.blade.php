@@ -13,14 +13,21 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <!-- Add enctype for file uploading -->
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            <x-input-label for="username" :value="__('Username')" />
+            <x-text-input id="username" name="username" type="text" class="mt-1 block w-full" :value="old('username', $user->username)" required autofocus autocomplete="username" />
+            <x-input-error class="mt-2" :messages="$errors->get('username')" />
+        </div>
+
+        <div>
+            <x-input-label for="about" :value="__('About Me')" />
+            <x-text-input id="about" name="about_me" type="text" class="mt-1 block w-full" :value="old('about_me', $user->about_me)" required autofocus autocomplete="about_me" />
+            <x-input-error class="mt-2" :messages="$errors->get('about_me')" />
         </div>
 
         <div>
@@ -43,6 +50,30 @@
                             {{ __('A new verification link has been sent to your email address.') }}
                         </p>
                     @endif
+                </div>
+            @endif
+        </div>
+
+        <!-- New Profile picture Upload Field -->
+        <div>
+            <x-input-label for="profile_picture" :value="__('Profile picture')" />
+            <input id="profile_picture" name="profile_picture" type="file" class="mt-1 block w-full" accept="image/*" />
+            <x-input-error class="mt-2" :messages="$errors->get('profile_picture')" />
+            @if($user->profile_picture)
+                <div class="mt-2">
+                    <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="{{ __('Current Profile picture') }}" class="w-20 h-20 rounded-full object-cover">
+                </div>
+            @endif
+        </div>
+
+        <!-- New Cover Picture Upload Field -->
+        <div>
+            <x-input-label for="cover_picture" :value="__('Cover Picture')" />
+            <input id="cover_picture" name="cover_picture" type="file" class="mt-1 block w-full" accept="image/*" />
+            <x-input-error class="mt-2" :messages="$errors->get('cover_picture')" />
+            @if($user->cover_picture)
+                <div class="mt-2">
+                    <img src="{{ asset('storage/' . $user->cover_picture) }}" alt="{{ __('Current Cover Picture') }}" class="w-full h-40 object-cover">
                 </div>
             @endif
         </div>
