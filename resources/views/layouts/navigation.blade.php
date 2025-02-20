@@ -17,7 +17,7 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('threads.index')" :active="request()->routeIs('threads')">
+                    <x-nav-link :href="route('threads.index')" :active="request()->routeIs('threads.index')">
                         {{ __('Threads') }}
                     </x-nav-link>
                 </div>
@@ -27,17 +27,10 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('threads.show', 1)" :active="request()->routeIs('announcments')">
-                        {{ __('Announcments') }}
+                    <x-nav-link :href="route('threads.show', 1)" :active="request()->routeIs('threads.show', 1)">
+                        {{ __('Announcements') }}
                     </x-nav-link>
                 </div>
-                @if (Auth::user() && Auth::user()->role == 'admin')
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('adminpage')" :active="request()->routeIs('adminpage')">
-                            {{ __('Admin') }}
-                        </x-nav-link>
-                    </div>
-                @endif
             </div>
 
             <!-- Settings Dropdown -->
@@ -47,7 +40,8 @@
                         <x-slot name="trigger">
                             <button
                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                <img src="{{ Auth::user()->profile_picture }}" alt="Profile Picture" class="h-8 w-8 rounded-full object-cover">
+                                <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : 'https://www.pngarts.com/files/10/Default-Profile-Picture-PNG-Download-Image.png' }}"
+                                    alt="Profile Picture" class="h-8 w-8 rounded-full object-cover">
                                 <div class="ms-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20">
@@ -111,7 +105,7 @@
                 {{ __('Members') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('threads.show', 1)" :active="request()->routeIs('threads.show', 1)">
-                {{ __('Announcments') }}
+                {{ __('Announcements') }}
             </x-responsive-nav-link>
         </div>
 
