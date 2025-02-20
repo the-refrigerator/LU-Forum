@@ -18,8 +18,8 @@ class ProfileUpdateRequest extends FormRequest
         return [
             'username' => ['required', 'string', 'max:255'],
             'about_me' => ['nullable', 'string', 'max:1000'],
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'cover_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'cover_picture' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'email' => [
                 'required',
                 'string',
