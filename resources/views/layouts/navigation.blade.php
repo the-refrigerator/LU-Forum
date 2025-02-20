@@ -104,20 +104,15 @@
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
                 {{ __('Home') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('threads.index')" :active="request()->routeIs('threads')">
+            <x-responsive-nav-link :href="route('threads.index')" :active="request()->routeIs('threads.index')">
                 {{ __('Threads') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('members')">
                 {{ __('Members') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('threads.show', 1)" :active="request()->routeIs('announcments')">
+            <x-responsive-nav-link :href="route('threads.show', 1)" :active="request()->routeIs('threads.show', 1)">
                 {{ __('Announcments') }}
             </x-responsive-nav-link>
-            @if (Auth::user() && Auth::user()->role == 'admin')
-                <x-responsive-nav-link :href="route('adminpage')" :active="request()->routeIs('adminpage')">
-                    {{ __('Admin') }}
-                </x-responsive-nav-link>
-            @endif
         </div>
 
         <!-- Responsive Settings Options -->
