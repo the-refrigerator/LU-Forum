@@ -100,8 +100,22 @@
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
-                {{ __('home') }}
+                {{ __('Home') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('threads.index')" :active="request()->routeIs('threads')">
+                {{ __('Threads') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('members')">
+                {{ __('Members') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('threads.show', 1)" :active="request()->routeIs('announcments')">
+                {{ __('Announcments') }}
+            </x-responsive-nav-link>
+            @if (Auth::user() && Auth::user()->role == 'admin')
+                <x-responsive-nav-link :href="route('adminpage')" :active="request()->routeIs('adminpage')">
+                    {{ __('Admin') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
