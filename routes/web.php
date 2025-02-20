@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Middleware\CheckRole;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThreadController;
-use App\Http\Middleware\CheckRole;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MembersController;
 
 Route::get('/', function () {
     $posts = \App\Models\Post::orderBy('created_at', 'desc')->limit(10)->get();
@@ -47,6 +48,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/posts/{post}/reply', [PostController::class, 'reply'])->name('posts.reply');
     Route::delete('/posts/reply/{reply}', [PostController::class, 'deleteReply'])->name('posts.deleteReply');
 });
+
+// members
+
+Route::get('/members', [MembersController::class, 'index'])->name('members.index');
+Route::get('/members', [MembersController::class, 'showAllMembers'])->name('members.index');
 
 // admin page
 Route::middleware(['auth'])->group(function () {
