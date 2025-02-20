@@ -32,9 +32,9 @@ Route::get('/threads', [ThreadController::class, 'index'])->name('threads.index'
 Route::get('/threads/{thread}', [ThreadController::class, 'show'])->name('threads.show');
 
 Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create')->middleware('auth');
+Route::post('/posts', [PostController::class, 'store'])->name('posts.store')->middleware('auth');
 
 Route::middleware(['auth', CheckRole::class . ':admin'])->group(function () {
-    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
     Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::patch('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
