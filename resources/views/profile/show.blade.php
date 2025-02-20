@@ -18,8 +18,16 @@
 
                 <!-- Profile Picture and User Info -->
                 <div class="flex items-center p-6">
-                    <img src="{{ $user->profile_picture ? asset('storage/' . $user->profile_picture) : 'https://www.pngarts.com/files/10/Default-Profile-Picture-PNG-Download-Image.png' }}"
-                        alt="Profile Picture" class="w-24 h-24 rounded-full mr-4">
+                    @if ($user->profile_picture)
+                        <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture"
+                            class="w-24 h-24 rounded-full object-cover mr-4">
+                    @else
+                        <div class="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-4xl font-semibold text-gray-600">
+                                {{ strtoupper(substr($user->username, 0, 1)) }}
+                            </span>
+                        </div>
+                    @endif
                     <div>
                         <h3 class="text-2xl font-bold">{{ $user->username }}</h3>
                         <p class="text-gray-500">Role: {{ $user->role }}</p>

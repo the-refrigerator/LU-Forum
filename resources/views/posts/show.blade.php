@@ -11,8 +11,16 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <div class="flex items-center mb-6">
-                    <img src="{{ $post->author->profile_picture ? asset('storage/' . $post->author->profile_picture) : 'https://www.pngarts.com/files/10/Default-Profile-Picture-PNG-Download-Image.png' }}"
-                        alt="{{ $post->author->name }}'s profile picture" class="w-12 h-12 rounded-full mr-4">
+                    @if (Auth::user()->profile_picture)
+                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="Profile Picture"
+                            class="w-12 h-12 rounded-full mr-4">
+                    @else
+                        <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center mr-4">
+                            <span class="text-lg font-semibold text-gray-600">
+                                {{ strtoupper(substr(Auth::user()->username, 0, 1)) }}
+                            </span>
+                        </div>
+                    @endif
                     <div>
                         <h3 class="text-lg font-semibold">
                             <a href="{{ route('profile.show', $post->author) }}" class="hover:underline">
@@ -64,9 +72,17 @@
                         @foreach ($post->replies as $reply)
                             <div class="mb-6 p-4 bg-gray-50 rounded-lg shadow-md">
                                 <div class="flex items-center mb-4">
-                                    <img src="{{ $reply->author->profile_picture ? asset('storage/' . $reply->author->profile_picture) : 'https://www.pngarts.com/files/10/Default-Profile-Picture-PNG-Download-Image.png' }}"
-                                        alt="{{ $reply->author->name }}'s profile picture"
-                                        class="w-10 h-10 rounded-full mr-4">
+                                    @if ($reply->author->profile_picture)
+                                        <img src="{{ asset('storage/' . $reply->author->profile_picture) }}"
+                                            alt="Profile Picture" class="h-10 w-10 rounded-full object-cover mr-4">
+                                    @else
+                                        <div
+                                            class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center mr-4">
+                                            <span class="text-lg font-semibold text-gray-600">
+                                                {{ strtoupper(substr($reply->author->username, 0, 1)) }}
+                                            </span>
+                                        </div>
+                                    @endif
                                     <div>
                                         <h4 class="text-lg font-semibold">
                                             <a href="{{ route('profile.show', $reply->author) }}"

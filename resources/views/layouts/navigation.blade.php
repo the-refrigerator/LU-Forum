@@ -40,8 +40,16 @@
                         <x-slot name="trigger">
                             <button
                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : 'https://www.pngarts.com/files/10/Default-Profile-Picture-PNG-Download-Image.png' }}"
-                                    alt="Profile Picture" class="h-8 w-8 rounded-full object-cover">
+                                @if (Auth::user()->profile_picture)
+                                    <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}"
+                                        alt="Profile Picture" class="h-8 w-8 rounded-full object-cover">
+                                @else
+                                    <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                                        <span class="text-lg font-semibold text-gray-600">
+                                            {{ strtoupper(substr(Auth::user()->username, 0, 1)) }}
+                                        </span>
+                                    </div>
+                                @endif
                                 <div class="ms-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20">
