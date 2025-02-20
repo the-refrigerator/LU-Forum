@@ -8,7 +8,7 @@ use App\Http\Middleware\CheckRole;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $posts = \App\Models\Post::orderBy('created_at', 'desc')->get();
+    $posts = \App\Models\Post::orderBy('created_at', 'desc')->limit(10)->get();
     return view('home', compact('posts'));
 })->name('home');
 
