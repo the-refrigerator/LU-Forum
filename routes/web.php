@@ -10,11 +10,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     $posts = \App\Models\Post::orderBy('created_at', 'desc')->get();
     return view('home', compact('posts'));
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->name('home');
 
 Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
 

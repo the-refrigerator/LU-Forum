@@ -16,21 +16,20 @@
                             <div class="p-4 border-b border-gray-200">
                                 <h2 class="text-xl font-semibold">{{ $post->title }}</h2>
                                 <p class="text-gray-600 text-sm">Posted on {{ $post->created_at->format('M d, Y') }} by
-                                    {{ $post->username }}</p>
+                                    <a href="{{ route('profile.show', $post->author) }}"
+                                        class="text-blue-500 hover:underline">
+                                        {{ $post->author->username }}
+                                    </a>
+                                    on
+                                    <a href="{{ route('threads.show', $post->thread) }}"
+                                        class="text-blue-500 hover:underline">
+                                        {{ $post->thread->name }}
+                                    </a>
+                                </p>
 
                                 <div class="mt-2">
                                     <a href="{{ route('posts.show', $post) }}"
                                         class="text-blue-500 hover:underline">View</a>
-                                    @if (auth()->check() && auth()->id() === $post->author_id)
-                                        | <a href="{{ route('posts.edit', $post) }}"
-                                            class="text-yellow-500 hover:underline">Edit</a>
-                                        <form action="{{ route('posts.destroy', $post) }}" method="POST"
-                                            class="inline-block ml-2" onsubmit="return confirm('Are you sure?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-500 hover:underline">Delete</button>
-                                        </form>
-                                    @endif
                                 </div>
                             </div>
                         @endforeach
