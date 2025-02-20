@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Post extends Model
+class Reply extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,14 +12,13 @@ class Post extends Model
      * @var array
      */
     protected $fillable = [
-        'title',
         'content',
         'author_id',
-        'thread_id',
+        'post_id',
     ];
 
     /**
-     * Get the author that owns the post.
+     * Get the author that owns the reply.
      */
     public function author()
     {
@@ -27,18 +26,10 @@ class Post extends Model
     }
 
     /**
-     * Get the thread that the post belongs to.
+     * Get the post that the reply belongs to.
      */
-    public function thread()
+    public function post()
     {
-        return $this->belongsTo(Thread::class, 'thread_id');
-    }
-
-    /**
-     * Get the replies for the post.
-     */
-    public function replies()
-    {
-        return $this->hasMany(Reply::class);
+        return $this->belongsTo(Post::class, 'post_id');
     }
 }

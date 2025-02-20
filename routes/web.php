@@ -15,6 +15,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -32,7 +34,22 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->group(function () {
 Route::get('/threads', [ThreadController::class, 'index'])->name('threads.index');
 Route::get('/threads/{thread}', [ThreadController::class, 'show'])->name('threads.show');
 
+Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create')->middleware('auth');
+
+Route::middleware(['auth', CheckRole::class . ':admin'])->group(function () {
+    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+    Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+    Route::patch('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+    Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+});
+
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/posts/{post}/reply', [PostController::class, 'reply'])->name('posts.reply');
+    Route::delete('/posts/reply/{reply}', [PostController::class, 'deleteReply'])->name('posts.deleteReply');
+});
 
 // admin page
 Route::middleware(['auth'])->group(function () {

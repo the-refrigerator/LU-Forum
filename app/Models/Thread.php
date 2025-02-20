@@ -15,4 +15,12 @@ class Thread extends Model
         'name',
         'description',
     ];
+
+    /**
+     * Get the posts for the thread, sorted by creation date.
+     */
+    public function posts()
+    {
+        return $this->hasMany(Post::class)->orderBy('created_at', 'desc');
+    }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Reply;
+use App\Models\Thread;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -23,7 +25,13 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        if (auth()->user()->role == 'admin') {
+            $threads = Thread::all();
+        } else {
+            $threads = Thread::where('name', '!=', 'Announcements')->get();
+        }
+
+        return view('posts.create', compact('threads'));
     }
 
     /**
@@ -35,12 +43,23 @@ class PostController extends Controller
     {
         // Validate the request data.
         $validatedData = $request->validate([
+            'title' => ['required', 'string'],
             'thread_id' => ['required', 'exists:threads,id'],
             'content' => ['required', 'string'],
         ]);
 
+        if (auth()->user()->role != 'admin') {
+            $thread = Thread::find($validatedData['thread_id']);
+            if ($thread->name == 'Announcements') {
+                return redirect()
+                    ->route('posts.create')
+                    ->with('status', 'You do not have permission to post to the Announcments thread.');
+            }
+        }
+
         // Create the post and associate it with the authenticated user.
         $post = Post::create([
+            'title' => $validatedData['title'],
             'thread_id' => $validatedData['thread_id'],
             'content' => $validatedData['content'],
             'author_id' => auth()->id(),
@@ -48,7 +67,7 @@ class PostController extends Controller
 
         // Redirect to the thread with a success message.
         return redirect()
-            ->route('threads.show', $post->thread_id)
+            ->route('posts.show', $post->id)
             ->with('status', 'Post created successfully.');
     }
 
@@ -94,7 +113,7 @@ class PostController extends Controller
 
         // Redirect with a success message.
         return redirect()
-            ->route('threads.show', $post->thread_id)
+            ->route('posts.show', $post->id)
             ->with('status', 'Post updated successfully.');
     }
 
@@ -113,5 +132,41 @@ class PostController extends Controller
         return redirect()
             ->route('threads.show', $post->thread_id)
             ->with('status', 'Post deleted successfully.');
+    }
+
+    /**
+     * Display a listing of the resource for a specific thread.
+     */
+    public function reply(Post $post, Request $request)
+    {
+        // Validate the request data.
+        $validatedData = $request->validate([
+            'content' => ['required', 'string'],
+        ]);
+
+        $reply = Reply::create([
+            'content' => $validatedData['content'],
+            'author_id' => auth()->id(),
+            'post_id' => $post->id,
+        ]);
+
+        // Redirect to the thread with a success message.
+        return redirect()
+            ->route('posts.show', $post->id)
+            ->with('status', 'Reply created successfully.');
+    }
+
+    /**
+     * Delete a reply.
+     */
+    public function deleteReply(Reply $reply)
+    {
+        abort_unless(auth()->id() === $reply->author_id || auth()->user()->isAdmin(), 403);
+
+        $reply->delete();
+
+        return redirect()
+            ->route('posts.show', $reply->post_id)
+            ->with('status', 'Reply deleted successfully.');
     }
 }

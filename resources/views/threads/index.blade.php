@@ -10,6 +10,11 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
     <h1 class="text-3xl font-bold mb-6">Threads</h1>
+        @if(auth()->user() && auth()->user()->role === 'admin')
+            <a href="{{ route('threads.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Create Thread
+            </a>
+        @endif
 
     @if(session('status'))
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
@@ -26,7 +31,10 @@
                             {{ $thread->name }}
                         </a>
                     </h2>
-                    <p class="mt-2 text-gray-600">{{ $thread->description }}</p>
+                    <p class="flex justify-between">
+                    <span class="mt-2 text-gray-600">{{ $thread->description }}</span>
+                    <span class="mt-2 font-bold">{{ $thread->posts->count() }} Posts</span>
+                    </p>
                 </div>
             @endforeach
         </div>

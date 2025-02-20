@@ -49,4 +49,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the posts that the user has created.
+     */
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'author_id');
+    }
 }

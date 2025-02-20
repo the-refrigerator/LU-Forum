@@ -80,8 +80,18 @@ class ThreadController extends Controller
      */
     public function update(Request $request, Thread $thread)
     {
-        // TODO: Implement an authorization check.
-        // Example: abort_unless(Auth::user()->isAdmin() || Auth::id() === $thread->user_id, 403);
+        // if thread name is 'Announcements' then only edit the description
+        if ($thread->name === 'Announcements') {
+            $validatedData = $request->validate([
+                'description' => ['nullable', 'string'],
+            ]);
+
+            $thread->update($validatedData);
+
+            return redirect()
+                ->route('threads.show', $thread)
+                ->with('status', 'Thread updated successfully.');
+        }
 
         // Validate the request data.
         $validatedData = $request->validate([
