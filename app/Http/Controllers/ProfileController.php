@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Reply;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -81,6 +82,10 @@ class ProfileController extends Controller
         $user = $request->user();
 
         Auth::logout();
+
+        Reply::where('author_id', $user->id)->delete();
+
+        $user->posts()->delete();
 
         $user->delete();
 

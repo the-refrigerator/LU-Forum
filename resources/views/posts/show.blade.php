@@ -11,13 +11,13 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <div class="flex items-center mb-6">
-                    @if (Auth::user()->profile_picture)
-                        <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}" alt="Profile Picture"
+                    @if ($post->author->profile_picture)
+                        <img src="{{ asset('storage/' . $post->author->profile_picture) }}" alt="Profile Picture"
                             class="w-12 h-12 rounded-full mr-4">
                     @else
                         <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center mr-4">
                             <span class="text-lg font-semibold text-gray-600">
-                                {{ strtoupper(substr(Auth::user()->username, 0, 1)) }}
+                                {{ strtoupper(substr($post->author->username, 0, 1)) }}
                             </span>
                         </div>
                     @endif
