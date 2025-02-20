@@ -2,3 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 @plugin "@tailwindcss/typography";
+
+/* Custom styles for the navbar to ensure consistency on mobile layouts */
+.navbar {
+    @apply bg-white border-b border-gray-100;
+}
+
+.navbar .nav-link {
+    @apply inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out sm:px-3 sm:pt-2 sm:border-b-4;
+}
+
+.navbar .nav-link.active {
+    @apply border-indigo-400 text-gray-900 focus:border-indigo-700;
+}
+
+.navbar .responsive-nav-link {
+    @apply block w-full ps-3 pe-4 py-2 border-l-4 border-transparent text-start text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out sm:ps-4 sm:pe-5 sm:py-3 sm:border-l-4;
+}
+
+.navbar .responsive-nav-link.active {
+    @apply border-indigo-400 text-indigo-700 bg-indigo-50 focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700;
+}

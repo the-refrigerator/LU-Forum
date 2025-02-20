@@ -10,6 +10,15 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
                 <h1 class="text-3xl font-bold mb-6">New Posts</h1>
 
+                @auth
+                    <div class="mt-6">
+                        <a href="{{ route('posts.create') }}"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            Create New Post
+                        </a>
+                    </div>
+                @endauth
+
                 @if ($posts->count())
                     <div class="space-y-4">
                         @foreach ($posts as $post)
@@ -37,15 +46,6 @@
                 @else
                     <p>There are no posts.</p>
                 @endif
-
-                @auth
-                    <div class="mt-6">
-                        <a href="{{ route('posts.create') }}"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                            Create New Post
-                        </a>
-                    </div>
-                @endauth
             </div>
         </div>
     </div>
